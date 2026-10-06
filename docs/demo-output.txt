@@ -1,0 +1,24 @@
+
+=== 1. Open account; provider returns 503 twice (injected), client retries with backoff ===
+  [info ] CBTokenProvider.oauth.token.issued {"alias":"x_cbk_int.core_banking","expires_in":300}
+  [info ] CBRestClient.http.response {"method":"POST","path":"/api/v1/accounts","status":503,"attempt":1,"elapsed_ms":0}
+  [warn ] CBRestClient.http.retry {"attempt":1,"status":503,"delay_ms":164}
+  [info ] CBRestClient.http.response {"method":"POST","path":"/api/v1/accounts","status":503,"attempt":2,"elapsed_ms":0}
+  [warn ] CBRestClient.http.retry {"attempt":2,"status":503,"delay_ms":322}
+  [info ] CBRestClient.http.response {"method":"POST","path":"/api/v1/accounts","status":201,"attempt":3,"elapsed_ms":0}
+  [info ] CBAccountSyncService.account.request.opened {"request":"dbfb03d668ee4ab0a1f7e5314d6f307f"}
+  result: {"status":"opened","accountNumber":"CB40000001"}
+
+=== 2. Same request processed again (e.g. flow re-run): no second account is created ===
+  [info ] CBAccountSyncService.idempotency.replay {"key":"cbk-2038F254BC111845B9C011697567D853D053696D"}
+  result: {"status":"opened","accountNumber":"CB40000001","replayed":true}
+  HTTP calls so far: 3
+
+=== 3. Inbound Scripted REST: core banking pushes an "account.frozen" event ===
+  [info ] CBAccountEventApi.event.accepted {"event_id":"evt-demo-000001","event_type":"account.frozen"}
+  [info ] CBAccountEventApi.event.duplicate {"event_id":"evt-demo-000001"}
+  [warn ] CBAccountEventApi.event.rejected {"errors":1}
+  first delivery  -> 201 {"result":{"event_id":"evt-demo-000001","sys_id":"aac65fdf96d346dfb26612cad63920df","status":"accepted"}}
+  redelivery      -> 200 {"result":{"event_id":"evt-demo-000001","sys_id":"aac65fdf96d346dfb26612cad63920df","status":"duplicate"}}
+  invalid payload -> 400 {"error":{"code":"VALIDATION_FAILED","message":"Payload failed validation","details":[{"path":"$.eventId","message":"does not match pattern ^[A-Za-z0-9-]{8,64}$"}],"correlation_id":"demo-corr-0002"}}
+  account status now: frozen
