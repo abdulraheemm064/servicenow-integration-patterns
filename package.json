@@ -6,7 +6,7 @@
   "author": "Abdul Raheem Mohammed",
   "private": true,
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "test": "node --test \"test/**/*.test.js\"",

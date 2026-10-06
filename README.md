@@ -67,7 +67,7 @@ docs/                      Architecture, integration decision guide, porting gui
 
 ## Tech stack
 
-ServiceNow server-side JavaScript (ES5) · Node.js 20+ · `node:test` · ESLint (ES5 is enforced for `src/`) · GitHub Actions
+ServiceNow server-side JavaScript (ES5) · Node.js 22+ · `node:test` · ESLint (ES5 is enforced for `src/`) · GitHub Actions
 
 ## Setup
 
