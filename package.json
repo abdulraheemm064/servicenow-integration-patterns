@@ -1,0 +1,21 @@
+{
+  "name": "servicenow-integration-patterns",
+  "version": "1.0.0",
+  "description": "ES5 Script Include patterns for ServiceNow integrations (OAuth via connection alias, retry/backoff, idempotency, validation, structured logging, Scripted REST, coalesce) with platform mocks, node:test suites and a mock core banking API.",
+  "license": "MIT",
+  "author": "Abdul Raheem Mohammed",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\"",
+    "lint": "eslint .",
+    "mock:server": "node mock-core-banking/server.js",
+    "demo": "node demo/run-demo.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.12.0"
+  }
+}

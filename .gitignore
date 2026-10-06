@@ -1,0 +1,14 @@
+# Node
+node_modules/
+npm-debug.log*
+coverage/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
